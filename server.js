@@ -1,10 +1,13 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const movieListSmall = require('./movies-data-small.json')
-
+console.log(process.env.API_TOKEN)
 const app = express()
 
 app.use(morgan('dev'))
+app.use(validateBearerToken)
+
 // Users can search for Movies by genre, country or avg_vote
 // When theres no name, it means to filter by type: Change the if to an else
     // Take the query.type and check if it .include() genre, country, and avg_vote
