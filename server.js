@@ -6,6 +6,8 @@ const app = express()
 
 app.use(morgan('dev'))
 // Users can search for Movies by genre, country or avg_vote
+// When theres no name, it means to filter by type: Change the if to an else
+    // Take the query.type and check if it .include() genre, country, and avg_vote
 function movieFilter(req, res) {
     let response = movieListSmall;
     if (req.query.name) {
@@ -14,6 +16,7 @@ function movieFilter(req, res) {
             movie.film_title.toLowerCase().includes(req.query.name.toLowerCase())
             )
     }
+    // submit feedback for number 1.2 in assignment
     else {
         console.log('type ran')
         let responseArr = [];
@@ -26,14 +29,13 @@ function movieFilter(req, res) {
             else if (movie.country.toLowerCase() === req.query.type.toLowerCase()) {
                 responseArr.push(movie)
             }
-            //  (req.query.type ===  ) {s
-            //     responseArr.push(movie)
-            // }
             // avg_vote
-        // })
-        // When theres no name, it means to filter by type: Change the if to an else
-        // Take the query.type and check if it .include() genre, country, and avg_vote
-        })
+            else {
+                let numOfType = Number(req.query.type)
+                if (numOfType <= movie.avg_vote) {
+                    responseArr.push(movie)
+            }            
+        }})
         response = responseArr
     }
     res.json(response)
