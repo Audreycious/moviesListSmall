@@ -8,6 +8,16 @@ const app = express()
 app.use(morgan('dev'))
 app.use(validateBearerToken)
 
+function validateBearerToken(req, res, next) { 
+  const apiToken = process.env.API_TOKEN 
+  const authToken = req.get('Authorization')
+
+if (!authToken || authToken.split(' ')[1] !== apiToken) { 
+  return res.status(401).json({ error: 'Unauthorized request' }) } 
+    next() 
+}
+
+
 // Users can search for Movies by genre, country or avg_vote
 // When theres no name, it means to filter by type: Change the if to an else
     // Take the query.type and check if it .include() genre, country, and avg_vote
