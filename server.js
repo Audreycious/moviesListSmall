@@ -1,14 +1,17 @@
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+const helmet = require('helmet')
+const cors = require('cors')
 const movieListSmall = require('./movies-data-small.json')
-console.log(process.env.API_TOKEN)
 const app = express()
 
 app.use(morgan('dev'))
-app.use(validateBearerToken)
+app.use(cors())
+app.use(helmet())
+app.use(validateRequest)
 
-function validateBearerToken(req, res, next) { 
+function validateRequest(req, res, next) { 
   const apiToken = process.env.API_TOKEN 
   const authToken = req.get('Authorization')
 
